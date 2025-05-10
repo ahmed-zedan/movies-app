@@ -7,12 +7,20 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.etax.movieapp.ui.theme.MovieAppTheme
+import com.etax.movies.details.presentation.navigation.movieDetailsScreen
+import com.etax.movies.details.presentation.navigation.navigateToMovieDetails
+import com.etax.movies.nowplaying.persentation.navigation.NowPlayingRoute
+import com.etax.movies.nowplaying.persentation.navigation.nowPlayingScreen
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,10 +28,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MovieAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    MovieAppNavHost(modifier = Modifier.fillMaxSize().padding(innerPadding))
                 }
             }
         }
@@ -31,17 +36,17 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun MovieAppNavHost(modifier: Modifier) {
+    val navController = rememberNavController()
+    NavHost(navController, startDestination = NowPlayingRoute, modifier = modifier) {
+        nowPlayingScreen(
+            onMovieClick = { id ->
+                navController.navigateToMovieDetails(id)
+            }
+        )
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MovieAppTheme {
-        Greeting("Android")
+        movieDetailsScreen(
+            onBackClick = { navController.popBackStack() }
+        )
     }
 }

@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -11,6 +12,7 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -21,3 +23,11 @@ dependencyResolutionManagement {
 
 rootProject.name = "Movie App"
 include(":app")
+
+include(":features:nowplaying:data")
+include(":features:nowplaying:persentation")
+include(":features:nowplaying:domain")
+
+include(":features:details:data")
+include(":features:details:presentation")
+include(":features:details:domain")

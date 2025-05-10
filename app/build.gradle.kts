@@ -1,21 +1,24 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.movieapp.android.application)
+    alias(libs.plugins.movieapp.android.application.compose)
+    alias(libs.plugins.movieapp.hilt)
+    alias(libs.plugins.movieapp.android.retrofit)
+    alias(libs.plugins.secrets)
 }
 
 android {
     namespace = "com.etax.movieapp"
-    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.etax.movieapp"
-        minSdk = 24
-        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -27,33 +30,27 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-    buildFeatures {
-        compose = true
-    }
+}
+
+secrets {
+    defaultPropertiesFileName = "secrets.defaults.properties"
 }
 
 dependencies {
+    implementation(project(":features:nowplaying:data"))
+    implementation(project(":features:nowplaying:domain"))
+    implementation(project(":features:nowplaying:persentation"))
+
+    implementation(project(":features:details:data"))
+    implementation(project(":features:details:domain"))
+    implementation(project(":features:details:presentation"))
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    testImplementation(libs.junit)
+    implementation(libs.bundles.workmanager)
+    implementation(libs.startup.runtime)
+    testImplementation(libs.bundles.testing)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
 }
