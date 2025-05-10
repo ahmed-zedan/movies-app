@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.movieapp.android.application)
     alias(libs.plugins.movieapp.android.application.compose)
     alias(libs.plugins.movieapp.hilt)
+    alias(libs.plugins.movieapp.android.retrofit)
+    alias(libs.plugins.secrets)
 }
 
 android {
@@ -15,6 +17,10 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -26,7 +32,19 @@ android {
     }
 }
 
+secrets {
+    defaultPropertiesFileName = "secrets.defaults.properties"
+}
+
 dependencies {
+    implementation(project(":features:nowplaying:data"))
+    implementation(project(":features:nowplaying:domain"))
+    implementation(project(":features:nowplaying:persentation"))
+
+    implementation(project(":features:details:data"))
+    implementation(project(":features:details:domain"))
+    implementation(project(":features:details:presentation"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.activity.compose)
