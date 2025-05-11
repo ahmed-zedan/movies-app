@@ -27,15 +27,16 @@ class CacheManagerImpl @Inject constructor(
 
     private suspend fun hasRemoteChanges(): Boolean {
         return try {
-            val localCount = db.movieDao().count()
+//            val localCount = db.movieDao().count()
             val remoteResponse = api.getMovieList(page = 1)
             val remoteTotal = remoteResponse.totalResults ?: return false
 
             preferences.getInt(LAST_TOTAL_RESULTS_KEY, -1).let { lastTotal ->
-                if (lastTotal != remoteTotal || localCount != remoteTotal) {
+                if (lastTotal != remoteTotal) {
                     preferences.edit { putInt(LAST_TOTAL_RESULTS_KEY, remoteTotal) }
                     true
-                } else false
+                } else
+                    false
             }
         } catch (e: Throwable) {
             false
@@ -52,9 +53,20 @@ class CacheManagerImpl @Inject constructor(
         }
     }
 
+    override fun setLastLoadedPage(page: Int) {
+        preferences.edit {
+            putInt(LAST_LOADED_PAGE_KEY, page)
+        }
+    }
+
+    override fun getLastLoadedPage(): Int? {
+        return preferences.getInt(LAST_LOADED_PAGE_KEY, -1).takeIf { it != -1 }
+    }
+
     companion object {
         private const val LAST_SYNC_KEY = "last_sync"
         private const val LAST_TOTAL_RESULTS_KEY = "last_total_results"
+        private const val LAST_LOADED_PAGE_KEY = "last_loaded_page"
         private const val CACHE_TTL_MS = 24 * 60 * 60 * 1000L // 24h
     }
 }

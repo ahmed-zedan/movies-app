@@ -36,7 +36,8 @@ interface MovieDao {
 
     @Query("SELECT * FROM movies WHERE " +
             "title LIKE :queryTitle OR original_title LIKE :queryTitle " +
-            "ORDER BY release_date DESC")
+             "ORDER BY release_date DESC"
+    )
     fun getAll(queryTitle: String): PagingSource<Int, MovieModel>
 
     @Query("SELECT id FROM movies")
@@ -58,7 +59,7 @@ fun MovieModel.toEntity() = Movie(
     originalTitle = originalTitle,
     overview = overview,
     popularity = popularity,
-    posterPath = posterPath,
+    posterPath = "https://image.tmdb.org/t/p/w500$posterPath",
     releaseDate = releaseDate,
     title = title,
     video = video,

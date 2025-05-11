@@ -6,5 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
     fun getPlayingMovies(queryTitle: String): Flow<PagingData<Movie>>
+    suspend fun sync(): Result<Unit>
 }
 

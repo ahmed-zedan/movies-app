@@ -11,7 +11,8 @@ android {
 
 dependencies {
     implementation(project(":features:nowplaying:domain"))
-    implementation(libs.bundles.paging)
+    implementation(libs.paging.runtime)
+    implementation(libs.bundles.workmanager)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
