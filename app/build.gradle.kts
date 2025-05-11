@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.movieapp.android.application.compose)
     alias(libs.plugins.movieapp.hilt)
     alias(libs.plugins.movieapp.android.retrofit)
+    alias(libs.plugins.movieapp.android.room)
     alias(libs.plugins.secrets)
 }
 
